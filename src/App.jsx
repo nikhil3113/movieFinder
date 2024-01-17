@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
   const [data, setData] = useState({});
   const [movies, setMovies] = useState("");
   const url = `https://api.themoviedb.org/3/search/movie?query=${movies}&api_key=4f99c02e8bcad841aa80e81ea963d4f6`;
+
+  
 
   //4f99c02e8bcad841aa80e81ea963d4f6
   const searchMovies = (event) => {
@@ -18,10 +20,24 @@ function App() {
         .catch((error) => {
           console.log(error);
         });
-      setMovies("");
+      // setMovies("");
     }
   };
 
+  const fetchDefault = async() =>{
+    try {
+      const response = await axios.get("https://api.themoviedb.org/3/movie/popular?api_key=4f99c02e8bcad841aa80e81ea963d4f6")
+      setData(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    fetchDefault();
+  },[])
+
+  
   return (
     <div className="app">
       <div className="search my-16 text-center">
